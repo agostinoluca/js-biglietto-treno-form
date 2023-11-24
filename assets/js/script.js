@@ -24,29 +24,75 @@ TOOLS:
 -document.getElementById / document.querySelector
 */
 
+// Generatore carrozza del treno
+function generaCarrozzaCasuale() {
+    return Math.floor(Math.random() * 10) + 1;
+}
+
+// Generatore codice CP
+function generaCodiceCp() {
+    return Math.floor(Math.random() * 100000) + 1;
+}
+
 // Funzione per leggere i dati dopo il click dell'utente
 document.getElementById("invio_dati").addEventListener("click", function(){
 
+    
     // Tramite degli input in pagina, chiediamo all'utente quanti km vuole fare e la sua età
-    const kmViaggio = parseFloat(document.querySelector(".km_viaggio").value);
-    const etaUtente = parseInt(document.querySelector(".eta_utente").value);
+    const kmViaggio = parseFloat(document.getElementById("km_viaggio").value);
+    const etaUtente = (document.getElementById("eta_utente").value);
+    const nominativo = (document.getElementById("inputName").value);
+    
+    // chiediamo all'utente di inserire solamente valori numerici
+    if (isNaN(kmViaggio)) {
+        alert('ERRORE. Per favore, inserisci solo valori numerici.');
+    } else {
 
-    // Costo del biglietto
-    let prezzoBase = 0.21 * kmViaggio;
-    let sconto = 0;
+        // Costo del biglietto
+        let prezzoBase = 0.21 * kmViaggio;    
 
-    // Calcolo sconto
-    if (etaUtente < 18) {
-        sconto = 0.2;
-    } else if (etaUtente >= 65) {
-        sconto = 0.4;
+        // Calcolo sconto
+        if (etaUtente === 'minorenne') {
+            sconto = 0.2;
+        } else if (etaUtente === 'over65') {
+            sconto = 0.4;
+        } else {
+            sconto = 0;
+        }
+        
+        // Genero il numero della carrozza del treno
+        let carrozza = generaCarrozzaCasuale();
+        
+        // Genero il codice CP del biglietto
+        let codiceCp = generaCodiceCp();
+
+        // Calcolo il prezzo finale
+        let prezzoFinale = prezzoBase - (prezzoBase * sconto);
+
+        // Stampo il nome del viaggiatore sul biglietto
+        document.getElementById('ticket_name').innerHTML = nominativo;
+
+        // Stampo il prezzo del biglietto in pagina
+        document.getElementById('ticket_price').innerHTML = `Prezzo € ${prezzoFinale.toFixed(2)}`;
+
+        // Stampo il numero della carrozza
+        document.getElementById('n_carrozza').innerHTML = `Carrozza numero: ${carrozza}`;
+
+        // Stampo il codice CP del biglietto
+        document.getElementById('codice_cp').innerHTML = `Codice CP: ${codiceCp}`;
+
+        // Stampo il tipo di offerta applicata
+        let offerta = document.getElementById('sconto_applicato');
+        if (sconto === 0.2) {
+            offerta.innerHTML = 'Tariffa Junior';
+        } else if (sconto === 0.4) {
+            offerta.innerHTML = 'Tariffa Senior';
+        } else {
+            offerta.innerHTML = 'Tariffa Standard';
+        }
+        
     }
 
-    // Calcolo il prezzo finale
-    let prezzoFinale = prezzoBase - (prezzoBase * sconto);
-
-    // Stampo il prezzo del biglietto in console
-    console.log("Il prezzo del biglietto è: " + prezzoFinale.toFixed(2) + " €");
 });
 
 

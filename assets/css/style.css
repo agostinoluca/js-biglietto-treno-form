@@ -3,3 +3,12 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+.nominativo {
+    border-right: 3px dotted grey;
+}
+
+.train_ticket {
+    border: 1px solid grey;
+    box-shadow: 1rem 1rem 0.5rem lightgray;
+}
